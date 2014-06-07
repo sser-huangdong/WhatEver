@@ -30,6 +30,8 @@ public class MainActivity extends Activity
      */
     private CharSequence mTitle;
 
+    private PlaceholderFragment pfs[] = new PlaceholderFragment[3];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +47,19 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        if (pfs[position] == null) {
+            pfs[position] = PlaceholderFragment.newInstance(position + 1);
+        }
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, pfs[position])
                 .commit();
 
     }
@@ -136,6 +143,7 @@ public class MainActivity extends Activity
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
+            System.out.println("Debug: init Fragment");
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -146,26 +154,25 @@ public class MainActivity extends Activity
         public PlaceholderFragment() {
         }
 
-        private static View viewInPositionOne = null;
+        private View rootView;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = null;
+//            View rootView = null;
+            if (rootView != null) {
+                return rootView;
+            }
+
             int position = getArguments().getInt(ARG_SECTION_NUMBER);
 
             if (position == 3) {
                 System.out.println("Debug: create about_us view");
                 rootView = inflater.inflate(R.layout.about_us, container, false);
-//                ((TextView) rootView.findViewById(R.id.about_us))
-//                        .setText(getResources().getString(R.string.about_us));
             } else if (position == 1){
-                if (viewInPositionOne == null) {
-                    System.out.println("Debug: create fragment_main view");
-                    viewInPositionOne = inflater.inflate(R.layout.fragment_main, container, false);
-                    new MainController(viewInPositionOne); //TODO
-                }
-                rootView = viewInPositionOne;
+                System.out.println("Debug: create fragment_main view");
+                rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                new MainController(rootView); //TODO
 
             } else if (position == 2) {
                 System.out.println("Debug: create all_options_setting view");
