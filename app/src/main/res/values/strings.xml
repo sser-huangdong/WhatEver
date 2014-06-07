@@ -2,12 +2,14 @@
 <resources>
 
     <string name="app_name">WhatEver</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">帮我选</string>
+    <string name="title_section2">全部选项</string>
+    <string name="title_section3">关于我们</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
-
+    <string name="about_us">关于我们：黄东 何嘉俊 李嘉杰 吴限</string>
+    <string name="coming_soon">敬请期待</string>
+    <string name="btn_get">帮我选</string>
 </resources>

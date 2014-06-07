@@ -146,12 +146,32 @@ public class MainActivity extends Activity
         public PlaceholderFragment() {
         }
 
+        private static View viewInPositionOne = null;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            View rootView = null;
+            int position = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            if (position == 3) {
+                System.out.println("Debug: create about_us view");
+                rootView = inflater.inflate(R.layout.about_us, container, false);
+//                ((TextView) rootView.findViewById(R.id.about_us))
+//                        .setText(getResources().getString(R.string.about_us));
+            } else if (position == 1){
+                if (viewInPositionOne == null) {
+                    System.out.println("Debug: create fragment_main view");
+                    viewInPositionOne = inflater.inflate(R.layout.fragment_main, container, false);
+                    new MainController(viewInPositionOne); //TODO
+                }
+                rootView = viewInPositionOne;
+
+            } else if (position == 2) {
+                System.out.println("Debug: create all_options_setting view");
+                rootView = inflater.inflate(R.layout.all_options_setting, container, false);
+            }
+
             return rootView;
         }
 
