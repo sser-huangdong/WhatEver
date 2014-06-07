@@ -1,5 +1,6 @@
 package com.sserhuangdong.whatever.app;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,18 @@ public class MainController {
         this.rootView = rootView;
         mAdapter = new ResultsAdapter(rootView.getContext());
         optionDAO = new OptionDAO(rootView.getContext());
-        handler = new Handler();
+
+        SharedPreferences sp = rootView.getContext().getSharedPreferences("whatever", 0);
+        boolean isDataBaseInit = sp.getBoolean("isDataBaseInit", false);
+        if (isDataBaseInit) {
+            SharedPreferences.Editor ed = sp.edit();
+            optionDAO.init();
+            ed.putBoolean("isDataBaseInit", true);
+            ed.commit();
+        }
+
+
+    handler = new Handler();
         initView();
 
     }
@@ -33,24 +45,9 @@ public class MainController {
         btn_pick_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Map<String, String> item = pickOne();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Map<String, String> item = pickOne();
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                mAdapter.addItem(item);
-//                            }
-//                        });
-                    }
-                }).start();
-                // Map<String, String> item = new HashMap<String, String>();
-                // item.put("name", "test");
-
-
-                // mAdapter.addItem(item);
+                mAdapter.addItem(item);
             }
         });
     }
@@ -58,13 +55,13 @@ public class MainController {
 
 
     private Map<String, String> pickOne() {
-        int len = 1;
+        int len = 5;
         List<Map<String, String>> options = optionDAO.getSomeOption(len);
 
         len = options.size();
         if (len == 0)
             return null;
-        return options.get(new Random().nextInt() % len);
+        return options.get(0);
     }
 
 }
