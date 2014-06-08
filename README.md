@@ -1,4 +1,6 @@
 WhatEver
 ========
 
-Android 
+Android
+
+apk path: app/app.apk 
