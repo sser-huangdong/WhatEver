@@ -71,7 +71,7 @@ public class OptionDAO extends SQLiteOpenHelper {
             values.put("like", 0);
             values.put("blacklist", 0);
 
-            System.out.println("db: " + db.insert(TABLE_NAME, null, values));
+            db.insert(TABLE_NAME, null, values);
             // db.execSQL("INSERT INTO "+ TABLE_NAME +" VALUES(null, ?, ?, ?, 0, 0)", new Object[]{loc[i], type[i], name[i]});
         }
     }

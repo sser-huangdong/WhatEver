@@ -17,6 +17,7 @@ public class MainController {
     private ResultsAdapter mAdapter;
     private OptionDAO optionDAO;
     private Handler handler;
+    Button btn_pick_one;
 
     public MainController(View rootView) {
         this.rootView = rootView;
@@ -25,7 +26,7 @@ public class MainController {
 
         SharedPreferences sp = rootView.getContext().getSharedPreferences("whatever", 0);
         boolean isDataBaseInit = sp.getBoolean("isDataBaseInit", false);
-        if (isDataBaseInit) {
+        if (!isDataBaseInit) {
             SharedPreferences.Editor ed = sp.edit();
             optionDAO.init();
             ed.putBoolean("isDataBaseInit", true);
@@ -47,13 +48,19 @@ public class MainController {
 
             }
         });
-        Button btn_pick_one = (Button) rootView.findViewById(R.id.btn_pick_one);
+        btn_pick_one = (Button) rootView.findViewById(R.id.btn_pick_one);
         btn_pick_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, String> item = pickOne();
+                btn_pick_one.setClickable(false);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Map<String, String> item = pickOne();
+                        handler.post(new AddItemRunnable(item));
+                    }
+                }).start();
 
-                mAdapter.addItem(item);
             }
         });
     }
@@ -65,9 +72,29 @@ public class MainController {
         List<Map<String, String>> options = optionDAO.getSomeOption(len);
 
         len = options.size();
-        if (len == 0)
+        if (len == 0) {
+
             return null;
+        }
         return options.get(0);
+    }
+
+    class AddItemRunnable implements Runnable {
+        Map<String, String> item;
+
+        public AddItemRunnable(Map<String, String> it) {
+            this.item = it;
+        }
+
+        @Override
+        public void run() {
+            if (mAdapter != null && item != null) {
+                mAdapter.addItem(item);
+            } else {
+                System.out.println("Debug: mAdapter null? " + (mAdapter == null));
+            }
+            btn_pick_one.setClickable(true);
+        }
     }
 
 }

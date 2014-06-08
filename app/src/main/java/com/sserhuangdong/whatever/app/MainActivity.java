@@ -159,7 +159,7 @@ public class MainActivity extends Activity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-//            View rootView = null;
+
             if (rootView != null) {
                 return rootView;
             }
@@ -172,8 +172,7 @@ public class MainActivity extends Activity
             } else if (position == 1){
                 System.out.println("Debug: create fragment_main view");
                 rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                new MainController(rootView); //TODO
-
+                new MainController(rootView);
             } else if (position == 2) {
                 System.out.println("Debug: create all_options_setting view");
                 rootView = inflater.inflate(R.layout.all_options_setting, container, false);
