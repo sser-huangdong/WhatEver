@@ -3,6 +3,7 @@ package com.sserhuangdong.whatever.app;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -40,7 +41,12 @@ public class MainController {
     private void initView() {
         ListView lv_results = (ListView) rootView.findViewById(R.id.lv_results);
         lv_results.setAdapter(mAdapter);
+        lv_results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            }
+        });
         Button btn_pick_one = (Button) rootView.findViewById(R.id.btn_pick_one);
         btn_pick_one.setOnClickListener(new View.OnClickListener() {
             @Override
